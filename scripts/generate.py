@@ -12,7 +12,6 @@ np.random.seed(0)
 
 # load configs
 from config import EXPERIMENT_CONFIG as conf
-from config import REPETITIONS as repetitions
 from config import SCREENING_CONFIG as sconf
 from config import FEATURE_SIZE_CONFIG as fconf
 
@@ -72,7 +71,7 @@ with open("build/oracles.json", "w+") as f:
 
 print(" " * 11 + "-- generating parameterizations for experiment runs.")
 parameters = {
-    "repetition": list(range(repetitions)),
+    "repetition": list(range(len(conf['experiment_repetition_id'])),
     "system": list(range(len(tdata))),
     "rel_sample_size": sconf["relative_sample_size"],
 }

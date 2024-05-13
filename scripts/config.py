@@ -25,7 +25,7 @@ FEATURE_SIZE_CONFIG = {
 }
 
 # number of repetitions per data point (software system and sample size)
-REPETITIONS = 30
+#REPETITIONS = 30
 
 # which sample sizes to test
 SCREENING_CONFIG = {
