@@ -4,7 +4,6 @@
 import sys
 import numpy as np
 import json
-import pandas as pd
 
 from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
 from gsnoop.causal import find_hitting_set, find_greedy_hitting_set
@@ -16,7 +15,6 @@ REPETITIONS = 30
 
 # no random here
 np.random.seed(1)
-
 
 def main(index):
     with open("./build/oracles.json", "r") as f:
@@ -98,6 +96,15 @@ def main(index):
     )
     return results
 
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)
 
 if __name__ == "__main__":
     import sys
@@ -108,5 +115,5 @@ if __name__ == "__main__":
 
     # store results
     with open(f"./results/{index}.json", "w+") as f:
-        f.write(json.dumps(result, indent=2))
+        f.write(json.dumps(result, indent=2, cls=NpEncoder))
 
