@@ -71,7 +71,7 @@ with open("build/oracles.json", "w+") as f:
 
 print(" " * 11 + "-- generating parameterizations for experiment runs.")
 parameters = {
-    "repetition": list(range(len(conf['experiment_repetition_id'])),
+    "repetition": list(range(len(conf['experiment_repetition_id']))),
     "system": list(range(len(tdata))),
     "rel_sample_size": sconf["relative_sample_size"],
 }
