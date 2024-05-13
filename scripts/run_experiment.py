@@ -51,11 +51,16 @@ def main(index):
         x_diff, y_diff = diff_transform(x, y)
         x_xor, y_xor = xor_transform(x, y)
 
+        # screen
+        lasso_options = lasso_screening(x_diff, y_diff)
+        group_screen = group_screening(x_diff, y_diff)
+        causal_screen = find_greedy_hitting_set(x_xor, y_xor, threshold=0.1)
+
         # compute and store feature selections
         feature_selection = {
-            "lasso_screen": lasso_screening(x_diff, y_diff),
-            "group_screen": group_screening(x_diff, y_diff),
-            "causal_screen": find_greedy_hitting_set(x_xor, y_xor, threshold=0.1),
+            "lasso_screen": lasso_options,
+            "group_screen": group_screen,
+            "causal_screen": causal_screen,
         }
         feature_selections.append(feature_selection)
 

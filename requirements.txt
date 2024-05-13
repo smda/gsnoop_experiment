@@ -1,4 +1,4 @@
-git+https://github.com/smba/gsnoop.git@0.1.3#egg=gsnoop
+git+https://github.com/smba/gsnoop.git@main
 streamlit
 scikit-learn
 matplotlib
