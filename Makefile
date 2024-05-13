@@ -22,6 +22,7 @@ run:
 .PHONY: clean
 clean:
 	@echo "Cleaning up..."
+	@rm -rf *.out
 	@rm -rf build/ 
 	@rm -rf results/
 	@rm -rf submit.sh 
