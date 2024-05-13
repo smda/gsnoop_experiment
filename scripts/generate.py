@@ -22,13 +22,13 @@ strings = []
 tdata = []
 for i, c in enumerate(ParameterGrid(conf)):
     # generate lambda expressions
-    features = c['features']
+    features = c["features"]
 
-    nterms = fconf['absolute_relevant_terms'][features][c['relevant_terms_level']]
+    nterms = fconf["absolute_relevant_terms"][features][c["relevant_terms_level"]]
 
-    interaction_degree = np.random.geometric(c['p_interaction_degree'], size=nterms)
+    interaction_degree = np.random.geometric(c["p_interaction_degree"], size=nterms)
 
-    effects = np.random.laplace(0, c['effect_spread'], size=nterms)
+    effects = np.random.laplace(0, c["effect_spread"], size=nterms)
 
     terms = [
         {
@@ -54,43 +54,36 @@ for i, c in enumerate(ParameterGrid(conf)):
     tdata.append(
         {
             "index": i,
-            "features": c['features'],
-            "relevant_terms_level": c['relevant_terms_level'],
-            "p_interaction_degree": c['p_interaction_degree'],
-            "experiment_repetition_id": c['experiment_repetition_id'],
+            "features": c["features"],
+            "relevant_terms_level": c["relevant_terms_level"],
+            "p_interaction_degree": c["p_interaction_degree"],
+            "experiment_repetition_id": c["experiment_repetition_id"],
             "terms": terms,
         }
     )
 
-print(" "*11 + "-- writing oracles to file.")
+print(" " * 11 + "-- writing oracles to file.")
 with open("build/oracles.py", "w+") as f:
     f.writelines(["systems = {\n"] + strings + ["}\n"])
 
-print(" "*11 + "-- writing oracle metadata to file.")
+print(" " * 11 + "-- writing oracle metadata to file.")
 with open("build/oracles.json", "w+") as f:
     f.write(json.dumps(tdata, indent=2))
 
-print(" "*11 + "-- generating parameterizations for experiment runs.")
+print(" " * 11 + "-- generating parameterizations for experiment runs.")
 parameters = {
-	"repetition": list(range(repetitions)),
-	"system": list(range(len(tdata))),
-	"rel_sample_size": sconf['relative_sample_size'],
+    "repetition": list(range(repetitions)),
+    "system": list(range(len(tdata))),
+    "rel_sample_size": sconf["relative_sample_size"],
 }
 
 commands = []
 for i, p in enumerate(ParameterGrid(parameters)):
-	command = f"python3 run_experiment.py {i}\n"
-	commands.append(command)
-	with open(f"./build/params/{i}.json", "w+") as f:
-		json.dump(p, f)
+    command = f"python3 run_experiment.py {i}\n"
+    commands.append(command)
+    with open(f"./build/params/{i}.json", "w+") as f:
+        json.dump(p, f)
 
-print(" "*11 + f"-- writing {len(commands)} commands to compute.")
+print(" " * 11 + f"-- writing {len(commands)} commands to compute.")
 with open("./build/jobs.txt", "w") as f:
-	f.writelines(commands)
-
-
-
-
-
-
-
+    f.writelines(commands)
