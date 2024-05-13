@@ -34,7 +34,8 @@ records = []
 feature_selections = []
 for repetition in range(REPETITIONS):
 
-    # TODO generate x and y
+	x = np.random.randint(2, size=(n_configs, n_features))
+	y = np.array(list(map(systems[index), x))
 
     # compute x_diff and x_xor for screening
     x_diff, y_diff = diff_transform(x, y)
