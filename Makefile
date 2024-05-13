@@ -4,8 +4,8 @@ all: run
 # Run custom commands
 .PHONY: run
 run:
-	@echo "[`date +"%T"`] Installing dependencies..."
-	@pip3 install -r requirements.txt --upgrade --force-reinstall >/dev/null 2>/dev/null
+	@echo "[$$(date +\"%T\")] Installing dependencies..."
+	@pip3 install --upgrade --force-reinstall -r requirements.txt  >/dev/null 2>/dev/null
 	@mkdir -p build/params/
 	@mkdir -p results/
 
