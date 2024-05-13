@@ -35,7 +35,7 @@ def main(index):
     interaction_p = metadata[index]["p_interaction_degree"]
 
     relevant_options = []
-    for term in params["system"]["terms"]:
+    for term in metadata[index]["terms"]:
         relevant_options += term["options"]
 
     # load oracles
