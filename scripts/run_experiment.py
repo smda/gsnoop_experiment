@@ -42,7 +42,7 @@ def main(index):
     exec(open("./build/oracles.py").read())  # systems = ...
 
     records = []
-    feature_selections = []
+    #feature_selections = []
     for repetition in range(REPETITIONS):
         x = np.random.randint(2, size=(abs_sample_size, features))
         y = np.array(list(map(systems[index], x)))
@@ -62,7 +62,7 @@ def main(index):
             "group_screen": group_screen,
             "causal_screen": causal_screen,
         }
-        feature_selections.append(feature_selection)
+        #feature_selections.append(feature_selection)
 
         # compute precision, recall, f1 score for all repetitions
         metrics = {
@@ -95,7 +95,7 @@ def main(index):
             "relevant_terms_level": relevant_terms_level,
             "interaction_p": interaction_p,
             "relevant_options": relevant_options,
-            "feature_selection": feature_selections,
+            #"feature_selection": feature_selections,
             "metrics": records,
         }
     )
