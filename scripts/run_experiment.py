@@ -11,7 +11,7 @@ from gsnoop.screening import group_screening, lasso_screening
 
 exec(open("./build/oracles.py").read()) 
 
-REPETITIONS = 30
+REPETITIONS = 50
 
 # no random here
 np.random.seed(1)
