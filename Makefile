@@ -5,8 +5,7 @@ all: run
 .PHONY: run
 run:
 	@echo "[`date +"%T"`] Installing dependencies..."
-	@pip3 uninstall gsnoop # if any exists..
-	@pip3 install -r requirements.txt >/dev/null 2>/dev/null
+	@pip3 install -r requirements.txt --upgrade --force-reinstall >/dev/null 2>/dev/null
 	@mkdir -p build/params/
 	@mkdir -p results/
 
