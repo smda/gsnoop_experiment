@@ -109,3 +109,4 @@ if __name__ == "__main__":
     # store results
     with open(f"./results/{index}.json", "w+") as f:
         f.write(json.dumps(result, indent=2))
+
