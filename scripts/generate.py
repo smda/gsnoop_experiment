@@ -61,6 +61,8 @@ for i, c in enumerate(ParameterGrid(conf)):
         }
     )
 
+print(len(tdata), len(tdata), len(tdata))
+
 print(" " * 11 + "-- writing oracles to file.")
 with open("build/oracles.py", "w+") as f:
     f.writelines(["systems = {\n"] + strings + ["}\n"])
@@ -70,14 +72,18 @@ with open("build/oracles.json", "w+") as f:
     f.write(json.dumps(tdata, indent=2))
 
 print(" " * 11 + "-- generating parameterizations for experiment runs.")
+print(len(conf['experiment_repetition_id']))
+
+
 parameters = {
-    "repetition": list(range(len(conf['experiment_repetition_id']))),
+    "repetition": list(range(2*len(conf['experiment_repetition_id']))),
     "system": list(range(len(tdata))),
     "rel_sample_size": sconf["relative_sample_size"],
 }
 
 commands = []
 for i, p in enumerate(ParameterGrid(parameters)):
+
     command = f"python3 ./build/run_experiment.py {i}\n"
     commands.append(command)
     with open(f"./build/params/{i}.json", "w+") as f:
