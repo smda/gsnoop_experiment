@@ -4,15 +4,12 @@ all: run
 # Run custom commands
 .PHONY: run
 run:
-	@echo "[$$(date +\"%T\")] Installing dependencies..."
 	@pip3 install --upgrade --force-reinstall -r requirements.txt  >/dev/null 2>/dev/null
 	@mkdir -p build/params/
 	@mkdir -p results/
 
-	@echo "[`date +"%T"`] Generating synthetic oracles..."
 	@python3 scripts/generate.py
 
-	@echo "[`date +"%T"`] Time for some coffee..."
 	@cp scripts/submit.sh ./submit.sh
 	@chmod +x submit.sh
 
