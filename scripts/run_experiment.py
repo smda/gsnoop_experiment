@@ -112,7 +112,7 @@ class NpEncoder(json.JSONEncoder):
         return super(NpEncoder, self).default(obj)
 
 if __name__ == "__main__":
-    import sys
+    
 
     index = sys.argv[1]
 
@@ -122,3 +122,4 @@ if __name__ == "__main__":
     with open(f"./results/{index}.json", "w+") as f:
         f.write(json.dumps(result, indent=2, cls=NpEncoder))
 
+    sys.exit(0)
