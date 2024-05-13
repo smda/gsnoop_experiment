@@ -79,7 +79,7 @@ parameters = {
 
 commands = []
 for i, p in enumerate(ParameterGrid(parameters)):
-    command = f"python3 run_experiment.py {i}\n"
+    command = f"python3 ./build/run_experiment.py {i}\n"
     commands.append(command)
     with open(f"./build/params/{i}.json", "w+") as f:
         json.dump(p, f)
