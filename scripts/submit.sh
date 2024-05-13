@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=gsnoop
-#SBATCH --output=/dev/null
-#SBATCH --error=/dev/null
+#SBITCH --output=/dev/null
+#SBITCH --error=/dev/null
 #SBATCH --exclusive
 
 # Read the i-th line from command.txt
