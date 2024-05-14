@@ -55,7 +55,7 @@ def main(index):
         # screen
         lasso_options = lasso_screening(x_diff, y_diff)
         group_screen = group_screening(x_diff, y_diff)
-        causal_screen = find_greedy_hitting_set(x_xor, y_xor, threshold=0.1)
+        causal_screen = find_greedy_hitting_set(x_xor)
 
         # compute and store feature selections
         feature_selection = {
