@@ -47,9 +47,10 @@ def main(index):
         x = np.random.randint(2, size=(abs_sample_size, features))
         y = np.array(list(map(systems[index], x)))
 
-        # compute x_diff and x_xor for screening
+	        # compute x_diff and x_xor for screening
         x_diff, y_diff = diff_transform(x, y)
-        x_xor, y_xor = xor_transform(x, y)
+        x_xor, y_xor = xor_transform(x, y) # threshold is meaningless here, since we do not add any noise
+		x_xor = np.vstack([x_xor[i,:] for i in range(x_xor.shape[0]) if y_xor[i] != 0])
 
         # screen
         lasso_options = lasso_screening(x_diff, y_diff)
@@ -58,9 +59,9 @@ def main(index):
 
         # compute and store feature selections
         feature_selection = {
-            "lasso_screen": lasso_options,
-            "group_screen": group_screen,
-            "causal_screen": causal_screen,
+            "lasso_screen": lasso_screening(x_diff, y_diff),
+            "group_screen": group_screening(x_diff, y_diff),
+            "causal_screen": find_greedy_hitting_set(x_xor, y_xor),
         }
         #feature_selections.append(feature_selection)
 
