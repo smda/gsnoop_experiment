@@ -9,12 +9,13 @@ from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
 from gsnoop.causal import find_hitting_set, find_greedy_hitting_set
 from gsnoop.screening import group_screening, lasso_screening
 
-exec(open("./build/oracles.py").read()) 
+exec(open("./build/oracles.py").read())
 
 REPETITIONS = 30
 
 # no random here
 np.random.seed(1)
+
 
 def main(index):
     with open("./build/oracles.json", "r") as f:
@@ -42,15 +43,17 @@ def main(index):
     exec(open("./build/oracles.py").read())  # systems = ...
 
     records = []
-    #feature_selections = []
+    # feature_selections = []
     for repetition in range(REPETITIONS):
         x = np.random.randint(2, size=(abs_sample_size, features))
         y = np.array(list(map(systems[index], x)))
 
-	        # compute x_diff and x_xor for screening
+        # compute x_diff and x_xor for screening
         x_diff, y_diff = diff_transform(x, y)
-        x_xor, y_xor = xor_transform(x, y) # threshold is meaningless here, since we do not add any noise
-		x_xor = np.vstack([x_xor[i,:] for i in range(x_xor.shape[0]) if y_xor[i] != 0])
+        x_xor, y_xor = xor_transform(
+            x, y
+        )  # threshold is meaningless here, since we do not add any noise
+        x_xor = np.vstack([x_xor[i, :] for i in range(x_xor.shape[0]) if y_xor[i] != 0])
 
         # screen
         lasso_options = lasso_screening(x_diff, y_diff)
@@ -63,7 +66,7 @@ def main(index):
             "group_screen": group_screening(x_diff, y_diff),
             "causal_screen": find_greedy_hitting_set(x_xor, y_xor),
         }
-        #feature_selections.append(feature_selection)
+        # feature_selections.append(feature_selection)
 
         # compute precision, recall, f1 score for all repetitions
         metrics = {
@@ -96,11 +99,12 @@ def main(index):
             "relevant_terms_level": relevant_terms_level,
             "interaction_p": interaction_p,
             "relevant_options": relevant_options,
-            #"feature_selection": feature_selections,
+            # "feature_selection": feature_selections,
             "metrics": records,
         }
     )
     return results
+
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -112,9 +116,8 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         return super(NpEncoder, self).default(obj)
 
-if __name__ == "__main__":
-    
 
+if __name__ == "__main__":
     index = sys.argv[1]
 
     result = main(index)
