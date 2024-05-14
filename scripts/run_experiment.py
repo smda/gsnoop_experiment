@@ -64,7 +64,7 @@ def main(index):
         feature_selection = {
             "lasso_screen": lasso_screening(x_diff, y_diff),
             "group_screen": group_screening(x_diff, y_diff),
-            "causal_screen": find_greedy_hitting_set(x_xor, y_xor),
+            "causal_screen": find_greedy_hitting_set(x_xor),
         }
         # feature_selections.append(feature_selection)
 
