@@ -7,7 +7,7 @@ import json
 
 from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
 from gsnoop.causal import find_hitting_set, find_greedy_hitting_set
-from gsnoop.screening import group_screening, lasso_screening
+from gsnoop.screening import group_screening, lasso_screening, stepwise_screen
 
 exec(open("./build/oracles.py").read())
 
@@ -57,13 +57,14 @@ def main(index):
 
         # screen
         lasso_options = lasso_screening(x_diff, y_diff)
-        group_screen = group_screening(x_diff, y_diff)
+        group_screen = group_screening(x_diff, y_diff) # 
         causal_screen = find_greedy_hitting_set(x_xor)
 
         # compute and store feature selections
         feature_selection = {
             "lasso_screen": lasso_screening(x_diff, y_diff),
-            "group_screen": group_screening(x_diff, y_diff),
+			"group_screen": stepwise_screening(x_diff, y_diff),
+            "stepwise_screen": group_screening(x_diff, y_diff),
             "causal_screen": find_greedy_hitting_set(x_xor),
         }
         # feature_selections.append(feature_selection)
