@@ -7,7 +7,7 @@ import json
 
 from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
 from gsnoop.causal import find_hitting_set, find_greedy_hitting_set
-from gsnoop.screening import group_screening, lasso_screening, stepwise_screen
+from gsnoop.screening import group_screening, lasso_screening, stepwise_screening
 
 exec(open("./build/oracles.py").read())
 
