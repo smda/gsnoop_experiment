@@ -63,8 +63,10 @@ def main(index):
         # compute and store feature selections
         feature_selection = {
             "lasso_screen": lasso_screening(x_diff, y_diff),
-			"group_screen": stepwise_screening(x_diff, y_diff),
-            "stepwise_screen": group_screening(x_diff, y_diff),
+
+			"stepwise_screen": stepwise_screening(x_diff, y_diff),
+            "group_screen": group_screening(x_diff, y_diff),
+
             "causal_screen": find_greedy_hitting_set(x_xor),
         }
         # feature_selections.append(feature_selection)
