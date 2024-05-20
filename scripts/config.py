@@ -3,7 +3,7 @@
 
 EXPERIMENT_CONFIG = {
     # number of configuration options (~configuration space complexity)
-    "features": [50, 100, 250, 500],
+    "features": [50, 100, 250],
     # spread of the influence distribution (Laplace distribution with mode 0)
     "effect_spread": [50],
     # repetition identifier (not the repetitions per data point) for generating different software systems
@@ -20,7 +20,7 @@ FEATURE_SIZE_CONFIG = {
         50: [3, 5, 8],
         100: [5, 8, 13],
         250: [8, 13, 21],
-        500: [13, 21, 34],
+        #500: [13, 21, 34],
     }
 }
 
