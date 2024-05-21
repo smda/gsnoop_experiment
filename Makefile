@@ -13,7 +13,7 @@ run:
 	@python3 scripts/generate.py
 
 	@echo "[`date +\"%T\"`] Time for some coffee..."
-	@cp scripts/submit.sh ./submit.sh
+	@cp scripts/run_experiment.py ./run_experiment.py
 	@chmod +x submit.sh
 
 	@cp scripts/run_experiment.py ./build/run_experiment.py
@@ -22,9 +22,7 @@ run:
 .PHONY: clean
 clean:
 	@echo "Cleaning up..."
-	@rm -rf *.out
 	@rm -rf build/ 
 	@rm -rf results/
-	@rm -rf submit.sh 
 	@rm -rf run_experiment.py
 

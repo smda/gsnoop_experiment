@@ -27,4 +27,4 @@ FEATURE_SIZE_CONFIG = {
 # REPETITIONS = 30
 
 # which sample sizes to test
-SCREENING_CONFIG = {"relative_sample_size": [0.5, 1.0, 1.5, 2.0, 2.5]}
+SCREENING_CONFIG = {"relative_sample_size": [0.75, 1.0, 1.25, 1.5, 1.75] }

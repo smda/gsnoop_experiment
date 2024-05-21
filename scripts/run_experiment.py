@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
+import os
 import numpy as np
 import json
+
+from multiprocessing import Pool
 
 from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
 from gsnoop.screening import (
@@ -20,6 +22,8 @@ REPETITIONS = 30
 # no random here
 np.random.seed(1)
 
+#import warnings
+#warnings.filterwarnings("ignore")
 
 def main(index):
     with open("./build/oracles.json", "r") as f:
@@ -59,6 +63,7 @@ def main(index):
         )  # threshold is meaningless here, since we do not add any noise
         x_xor = np.vstack([x_xor[i, :] for i in range(x_xor.shape[0]) if y_xor[i] != 0])
 
+        '''
         # compute and store feature selections
         feature_selection = {
             "baseline-normal": baseline_screening(x, y),
@@ -67,19 +72,19 @@ def main(index):
             "sizefit-group": stable_screening(x_diff, y_diff),
             "causal-group": find_greedy_hitting_set(x_xor),
         }
-
-        tolerances = [0.05, 0.025, 0.01, 0.005]
+        '''
+        tolerances = [0.05, 0.025, 0.01]
         stepwise_options_normal = stepwise_screening(x, y, tolerances)
-        stepwise_options_group = stepwise_screening(x_diff, y_diff, tolerances)
+        print(stepwise_options_normal)
+        #stepwise_options_group = stepwise_screening(x_diff, y_diff, tolerances)
 
         for k, tolerance in enumerate(tolerances):
             feature_selection[f"stepsize-normal-{tolerance}"] = stepwise_options_normal[
                 k
             ]
-            feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[
-                k
-            ]
-            
+            #feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[
+            #    k
+            #]
 
         # feature_selections.append(feature_selection)
 
@@ -99,9 +104,10 @@ def main(index):
             },
         }
 
+        
         # store options and classification metrics
-        records.append(metrics)
-
+        #records.append(metrics)
+        
     # merge everythin into a single dict
     results = {}
     results.update(
@@ -131,14 +137,17 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         return super(NpEncoder, self).default(obj)
 
-
-if __name__ == "__main__":
-    index = sys.argv[1]
-
+def process_index(index):
+    print(index)
     result = main(index)
-
-    # store results
-    with open(f"./results/{index}.json", "w+") as f:
+    with open(f"results/{index}.json", "w") as f:
         f.write(json.dumps(result, indent=2, cls=NpEncoder))
 
-    sys.exit(0)
+
+if __name__ == "__main__":
+    indices = range(100)#range(len(os.listdir('./build/params/'))) 
+    print(f'Starting experiment with {len(list(indices))} runs.')
+    for index in indices:
+        process_index(index)
+    #with Pool(processes=4) as pool: 
+    #    pool.map(process_index, indices)
