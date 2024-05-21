@@ -76,7 +76,10 @@ def main(index):
             feature_selection[f"stepsize-normal-{tolerance}"] = stepwise_options_normal[
                 k
             ]
-            feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[k]
+            feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[
+                k
+            ]
+            
 
         # feature_selections.append(feature_selection)
 
