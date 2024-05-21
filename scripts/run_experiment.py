@@ -6,8 +6,12 @@ import numpy as np
 import json
 
 from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
-from gsnoop.causal import find_hitting_set, find_greedy_hitting_set
-from gsnoop.screening import group_screening, lasso_screening, stepwise_screening
+from gsnoop.screening import (
+    baseline_screening,
+    stable_screening,
+    stepwise_screening,
+    find_greedy_hitting_set,
+)
 
 exec(open("./build/oracles.py").read())
 
@@ -55,20 +59,25 @@ def main(index):
         )  # threshold is meaningless here, since we do not add any noise
         x_xor = np.vstack([x_xor[i, :] for i in range(x_xor.shape[0]) if y_xor[i] != 0])
 
-        # screen
-        lasso_options = lasso_screening(x_diff, y_diff)
-        group_screen = group_screening(x_diff, y_diff) # 
-        causal_screen = find_greedy_hitting_set(x_xor)
-
         # compute and store feature selections
         feature_selection = {
-            "lasso_screen": lasso_screening(x_diff, y_diff),
-
-			"stepwise_screen": stepwise_screening(x_diff, y_diff),
-            "group_screen": group_screening(x_diff, y_diff),
-
-            "causal_screen": find_greedy_hitting_set(x_xor),
+            "baseline-normal": baseline_screening(x, y),
+            "baseline-group": baseline_screening(x, y),
+            "sizefit-normal": stable_screening(x, y_diff),
+            "sizefit-group": stable_screening(x_diff, y_diff),
+            "causal-group": find_greedy_hitting_set(x_xor),
         }
+
+        tolerances = [0.05, 0.025, 0.01, 0.005]
+        stepwise_options_normal = stepwise_screening(x, y, tolerances)
+        stepwise_options_group = stepwise_screening(x_diff, y_diff, tolerances)
+
+        for k, tolerance in enumerate(tolerances):
+            feature_selection[f"stepsize-normal-{tolerance}"] = stepwise_options_normal[
+                k
+            ]
+            feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[k]
+
         # feature_selections.append(feature_selection)
 
         # compute precision, recall, f1 score for all repetitions

@@ -3,13 +3,13 @@
 
 EXPERIMENT_CONFIG = {
     # number of configuration options (~configuration space complexity)
-    "features": [50, 100, 250, 500],
+    "features": [50, 100, 250],
     # spread of the influence distribution (Laplace distribution with mode 0)
     "effect_spread": [50],
     # repetition identifier (not the repetitions per data point) for generating different software systems
     "experiment_repetition_id": list(range(3)),
     # parameter controlling the interaction degree (distribution), parameter for the geometric distribution (higher p -> lower interaction degree)
-    "p_interaction_degree": [0.65, 0.7, 0.75],
+    "p_interaction_degree": [0.65, 0.70, 0.75],
     # number of relevant terms (options and interactions) varied at three levels (see FEATURE_SIZE_CONFIG)
     "relevant_terms_level": [0, 1, 2],
 }
@@ -20,7 +20,7 @@ FEATURE_SIZE_CONFIG = {
         50: [3, 5, 8],
         100: [5, 8, 13],
         250: [8, 13, 21],
-        500: [13, 21, 34],
+        # 500: [13, 21, 34],
     }
 }
 
@@ -28,4 +28,4 @@ FEATURE_SIZE_CONFIG = {
 # REPETITIONS = 30
 
 # which sample sizes to test
-SCREENING_CONFIG = {"relative_sample_size": [0.5, 1.0, 1.5, 2.0]}
+SCREENING_CONFIG = {"relative_sample_size": [0.5, 1.0, 1.5, 2.0, 2.5]}
