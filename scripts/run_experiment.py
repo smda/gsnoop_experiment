@@ -7,6 +7,8 @@ import json
 
 from multiprocessing import Pool
 
+from sklearn.preprocessing import StandardScaler
+
 from gsnoop.util import diff_transform, xor_transform, precision, recall, f1
 from gsnoop.screening import (
     baseline_screening,
@@ -22,8 +24,8 @@ REPETITIONS = 30
 # no random here
 np.random.seed(1)
 
-#import warnings
-#warnings.filterwarnings("ignore")
+import warnings
+warnings.filterwarnings("ignore")
 
 def main(index):
     with open("./build/oracles.json", "r") as f:
@@ -56,6 +58,9 @@ def main(index):
         x = np.random.randint(2, size=(abs_sample_size, features))
         y = np.array(list(map(systems[index], x)))
 
+        scaler = StandardScaler()
+        y = scaler.fit_transform(y.reshape(-1, 1)).ravel()
+
         # compute x_diff and x_xor for screening
         x_diff, y_diff = diff_transform(x, y)
         x_xor, y_xor = xor_transform(
@@ -63,30 +68,27 @@ def main(index):
         )  # threshold is meaningless here, since we do not add any noise
         x_xor = np.vstack([x_xor[i, :] for i in range(x_xor.shape[0]) if y_xor[i] != 0])
 
-        '''
+        
         # compute and store feature selections
         feature_selection = {
             "baseline-normal": baseline_screening(x, y),
-            "baseline-group": baseline_screening(x, y),
-            "sizefit-normal": stable_screening(x, y_diff),
+            "baseline-group": baseline_screening(x_diff, y_diff),
+            "sizefit-normal": stable_screening(x, y),
             "sizefit-group": stable_screening(x_diff, y_diff),
             "causal-group": find_greedy_hitting_set(x_xor),
         }
-        '''
-        tolerances = [0.05, 0.025, 0.01]
+        
+        tolerances = [0.05, 0.025, 0.01, 0.005]
         stepwise_options_normal = stepwise_screening(x, y, tolerances)
-        print(stepwise_options_normal)
-        #stepwise_options_group = stepwise_screening(x_diff, y_diff, tolerances)
+        stepwise_options_group = stepwise_screening(x_diff, y_diff, tolerances)
 
         for k, tolerance in enumerate(tolerances):
             feature_selection[f"stepsize-normal-{tolerance}"] = stepwise_options_normal[
                 k
             ]
-            #feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[
-            #    k
-            #]
-
-        # feature_selections.append(feature_selection)
+            feature_selection[f"stepsize-group-{tolerance}"] = stepwise_options_group[
+                k
+            ]
 
         # compute precision, recall, f1 score for all repetitions
         metrics = {
@@ -106,7 +108,7 @@ def main(index):
 
         
         # store options and classification metrics
-        #records.append(metrics)
+        records.append(metrics)
         
     # merge everythin into a single dict
     results = {}
@@ -141,13 +143,10 @@ def process_index(index):
     print(index)
     result = main(index)
     with open(f"results/{index}.json", "w") as f:
-        f.write(json.dumps(result, indent=2, cls=NpEncoder))
-
+        json.dump(result, f, indent=2, cls=NpEncoder)
 
 if __name__ == "__main__":
-    indices = range(100)#range(len(os.listdir('./build/params/'))) 
+    indices = range(len(os.listdir('./build/params/'))) 
     print(f'Starting experiment with {len(list(indices))} runs.')
-    for index in indices:
-        process_index(index)
-    #with Pool(processes=4) as pool: 
-    #    pool.map(process_index, indices)
+    with Pool(processes=4) as pool: 
+        pool.map(process_index, indices)
