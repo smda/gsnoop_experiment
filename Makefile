@@ -14,7 +14,7 @@ run:
 
 	@echo "[`date +\"%T\"`] Time for some coffee..."
 	@cp scripts/run_experiment.py ./run_experiment.py
-	@chmod +x submit.sh
+	#@chmod +x submit.sh
 
 	@cp scripts/run_experiment.py ./build/run_experiment.py
 
