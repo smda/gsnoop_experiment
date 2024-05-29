@@ -5,7 +5,7 @@ all: run
 .PHONY: run
 run:
 	@echo "[`date +\"%T\"`] Installing dependencies..."
-	@pip3 install --upgrade -r requirements.txt >/dev/null 2>/dev/null
+	pip3 install --break-system-packages --upgrade -r requirements.txt >/dev/null 2>/dev/null
 	@mkdir -p build/params/
 	@mkdir -p results/
 
