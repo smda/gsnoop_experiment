@@ -5,7 +5,7 @@ import os
 import numpy as np
 import json
 
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 
 from sklearn.preprocessing import StandardScaler
 
@@ -151,8 +151,8 @@ def process_index(index):
         json.dump(result, f, indent=2, cls=NpEncoder)
 
 if __name__ == "__main__":
-    indices = range(2431) #len(os.listdir('./build/params/'))) 
+    indices = range(int(sys.argv[1]), 2431, 3) #len(os.listdir('./build/params/'))) 
     print(f'Starting experiment with {len(list(indices))} runs.')
-    with Pool(processes=8) as pool: 
+    with Pool(processes=cpu_count()) as pool: 
         pool.map(process_index, indices)
 
