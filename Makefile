@@ -20,6 +20,5 @@ run:
 clean:
 	@echo "Cleaning up..."
 	@rm -rf build/ 
-	@rm -rf results/
 	@rm -rf run_experiment.py
 
