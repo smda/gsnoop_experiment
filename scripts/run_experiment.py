@@ -141,12 +141,18 @@ class NpEncoder(json.JSONEncoder):
 
 def process_index(index):
     print(index)
+    a = os.listdir('./results/')
+    
+    a = [int(d.split('.')[0]) for d in a]
+    if index in a:
+        return
     result = main(index)
     with open(f"results/{index}.json", "w") as f:
         json.dump(result, f, indent=2, cls=NpEncoder)
 
 if __name__ == "__main__":
-    indices = range(len(os.listdir('./build/params/'))) 
+    indices = range(2431) #len(os.listdir('./build/params/'))) 
     print(f'Starting experiment with {len(list(indices))} runs.')
-    with Pool(processes=4) as pool: 
+    with Pool(processes=8) as pool: 
         pool.map(process_index, indices)
+
